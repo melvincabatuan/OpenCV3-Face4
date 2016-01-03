@@ -1,6 +1,6 @@
 # Face Detection in OpenCV with Gradle Experimental Plugin
 
-facedetectionopencvwithgradleexperimentalplugin-melvincabatuan created by Classroom for GitHub
+
 
 ## Warning
 
@@ -17,17 +17,16 @@ For issues, refer to:
 
 ## Keypoints:
 
-'gradle-wrapper.propertie' uses 'gradle-2.5'. (Only gradle-2.5 works in the current release for external library...)
+'gradle-wrapper.properties' uses 'gradle-2.8'. 
 ```gradle
-#Sun Nov 15 20:02:55 PHT 2015
 distributionBase=GRADLE_USER_HOME
 distributionPath=wrapper/dists
 zipStoreBase=GRADLE_USER_HOME
 zipStorePath=wrapper/dists
-distributionUrl=https\://services.gradle.org/distributions/gradle-2.5-all.zip
+distributionUrl=https\://services.gradle.org/distributions/gradle-2.8-all.zip
 ```
 
-Project's 'build.gradle' uses 'gradle-experimental:0.2.0'. 
+Project's 'build.gradle' uses 'gradle-experimental:0.4.0'. 
 ```gradle
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
@@ -36,7 +35,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle-experimental:0.2.0'
+        classpath 'com.android.tools.build:gradle-experimental:0.4.0'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -79,7 +78,7 @@ model {
         }
         release {
             minifyEnabled = false
-            proguardFiles += file('proguard-rules.pro')
+            proguardFiles.add(file('proguard-rules.txt'))
         }
     }
 
@@ -90,81 +89,17 @@ model {
 
     android.ndk {
         moduleName = "detection_based_tracker"
-
-        cppFlags += "-Werror"
-        cppFlags += "--debug"
-        cppFlags += "-frtti"
-        cppFlags += "-fexceptions"
-        cppFlags += "-I${file('/home/cobalt/Android/OpenCV-android-sdk/sdk/native/jni/include')}".toString()
-        cppFlags += "-I${file('src/main/jni')}".toString()
-
-        ldLibs += ["android", "log", "stdc++", "dl", "z"]
-        stl = "gnustl_static"
+        cppFlags.addAll(["-Werror","--debug","-frtti","-fexceptions","-I${file('/home/cobalt/Android/OpenCV-android-sdk/sdk/native/jni/include')}".toString(),"-I${file('src/main/jni')}".toString()])
+        ldLibs.addAll(["android", "log", "stdc++", "dl", "z"])
+        stl = "stlport_static"
     }
 
     android.productFlavors {
-        create("arm") {
-            ndk.with {
-                abiFilters += "armeabi"
-
-                File curDir = file('./')
-                curDir = file(curDir.absolutePath)
-                ldLibs += curDir.absolutePath + "/src/main/jniLibs/" + "armeabi" + "/libopencv_java3.so"
-            }
-        }
-        create("arm7") {
-            ndk.with {
-                abiFilters += "armeabi-v7a"
-
-                File curDir = file('./')
-                curDir = file(curDir.absolutePath)
-                ldLibs += curDir.absolutePath + "/src/main/jniLibs/" + "armeabi-v7a" + "/libopencv_java3.so"
-            }
-        }
-        create("arm8") {
-            ndk.with {
-                abiFilters += "arm64-v8a"
-
-                File curDir = file('./')
-                curDir = file(curDir.absolutePath)
-                ldLibs += curDir.absolutePath + "/src/main/jniLibs/" + "arm64-v8a" + "/libopencv_java3.so"
-            }
-        }
-        create("x86") {
-            ndk.with {
-                abiFilters += "x86"
-
-                File curDir = file('./')
-                curDir = file(curDir.absolutePath)
-                ldLibs += curDir.absolutePath + "/src/main/jniLibs/" + "x86" + "/libopencv_java3.so"
-            }
-        }
-        create("x86-64") {
-            ndk.with {
-                abiFilters += "x86_64"
-
-                File curDir = file('./')
-                curDir = file(curDir.absolutePath)
-                ldLibs += curDir.absolutePath + "/src/main/jniLibs/" + "x86-64" + "/libopencv_java3.so"
-            }
-        }
-        create("mips") {
-            ndk.with {
-                abiFilters += "mips"
-
-                File curDir = file('./')
-                curDir = file(curDir.absolutePath)
-                ldLibs += curDir.absolutePath + "/src/main/jniLibs/" + "mips" + "/libopencv_java3.so"
-            }
-        }
-        create("mips-64") {
-            ndk.with {
-                abiFilters += "mips64"
-
-                File curDir = file('./')
-                curDir = file(curDir.absolutePath)
-                ldLibs += curDir.absolutePath + "/src/main/jniLibs/" + "mips64" + "/libopencv_java3.so"
-            }
+        create ("arm7") {
+            ndk.abiFilters.add("armeabi-v7a")
+            File currentDir = file('./')
+            currentDir = file(currentDir.absolutePath)
+            ndk.ldLibs.add(currentDir.absolutePath + "/src/main/jniLibs/" + "armeabi-v7a" + "/libopencv_java3.so")
         }
     }
 }
@@ -175,31 +110,9 @@ dependencies {
 }
 ```
 
+## Screenshot
 
-## Accept
+![screenshot](device-2016-01-03-195045.png)
 
-To accept the assignment, click the following URL:
-
-https://classroom.github.com/assignment-invitations/610c54dad6aa19a3a1ee4cbec8301de5
-
-## Sample Solution:
-
-https://github.com/DeLaSalleUniversity-Manila/facedetectionopencvwithgradleexperimentalplugin-melvincabatuan
-
-## Submission Procedure with Git: 
-
-```shell
-$ cd /path/to/your/android/app/
-$ git init
-$ git add –all
-$ git commit -m "your message, e.x. Assignment 1 submission"
-$ git remote add origin <Assignment link copied from assignment github, e.x. https://github.com/DeLaSalleUniversity-Manila/secondactivityassignment-melvincabatuan.git>
-$ git push -u origin master
-<then Enter Username and Password>
-```
-
-## Videocapture:
-
-[![screenshot](screenshot_001.png)](https://youtu.be/QsU8pufBMfk)
 
 "*C is quirky, flawed, and an enormous success.*" - Dennis M. Ritchie
